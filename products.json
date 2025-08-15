@@ -1,0 +1,362 @@
+[
+    {
+        "sku": "6624827",
+        "zip_code": "90503",
+        "name": "DR Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Destined Rivals",
+        "priority": "high"
+    },
+    {
+        "sku": "6639108",
+        "zip_code": "90503",
+        "name": "Mega BB",
+        "category": "Booster Box",
+        "set": "Mega Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6639109",
+        "zip_code": "90503",
+        "name": "Mega BBox",
+        "category": "Booster Box",
+        "set": "Mega Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6639103",
+        "zip_code": "90503",
+        "name": "Mega ETB",
+        "category": "Elite Trainer Box",
+        "set": "Mega Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6639102",
+        "zip_code": "90503",
+        "name": "Mega Tins",
+        "category": "Tin Collection",
+        "set": "Mega Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6608206",
+        "zip_code": "90503",
+        "name": "PE BB",
+        "category": "Booster Box",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6639107",
+        "zip_code": "90503",
+        "name": "PE Premium Figure",
+        "category": "Premium Collection",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6632402",
+        "zip_code": "90503",
+        "name": "BB BB",
+        "category": "Booster Box",
+        "set": "BBWF",
+        "priority": "medium"
+    },
+    {
+        "sku": "6548370",
+        "zip_code": "90503",
+        "name": "151 Zapdos Box",
+        "category": "Special Box",
+        "set": "151",
+        "priority": "high"
+    },
+    {
+        "sku": "6548368",
+        "zip_code": "90503",
+        "name": "151 Alakazam Box",
+        "category": "Special Box",
+        "set": "151",
+        "priority": "high"
+    },
+    {
+        "sku": "6531831",
+        "zip_code": "90503",
+        "name": "S&V Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Scarlet & Violet",
+        "priority": "low"
+    },
+    {
+        "sku": "6557810",
+        "zip_code": "90503",
+        "name": "Paradox Rift Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Paradox Rift",
+        "priority": "low"
+    },
+    {
+        "sku": "6540134",
+        "zip_code": "90503",
+        "name": "Paldea Evolved Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Paldea Evolved",
+        "priority": "medium"
+    },
+    {
+        "sku": "6614259",
+        "zip_code": "90503",
+        "name": "JT Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Journey Together",
+        "priority": "medium"
+    },
+    {
+        "sku": "6588401",
+        "zip_code": "90503",
+        "name": "Stellar Crown Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Stellar Crown",
+        "priority": "low"
+    },
+    {
+        "sku": "6571896",
+        "zip_code": "90503",
+        "name": "Temporal Forces Sleeve",
+        "category": "Sleeved Booster",
+        "set": "Temporal Forces",
+        "priority": "low"
+    },
+    {
+        "sku": "6568006",
+        "zip_code": "90503",
+        "name": "Paldean Fates BB",
+        "category": "Booster Box",
+        "set": "Paldean Fates",
+        "priority": "top"
+    },
+    {
+        "sku": "6607717",
+        "zip_code": "90503",
+        "name": "PE Surprise Box",
+        "category": "Special Box",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6632399",
+        "zip_code": "90503",
+        "name": "WF BB",
+        "category": "Booster Box",
+        "set": "BBWF",
+        "priority": "medium"
+    },
+    {
+        "sku": "6624825",
+        "zip_code": "90503",
+        "name": "DR ETB",
+        "category": "Elite Trainer Box",
+        "set": "Destined Rivals",
+        "priority": "high"
+    },
+    {
+        "sku": "6609201",
+        "zip_code": "90503",
+        "name": "151 Blooming Waters",
+        "category": "Special Collection",
+        "set": "151",
+        "priority": "high"
+    },
+    {
+        "sku": "6548371",
+        "zip_code": "90503",
+        "name": "151 BB",
+        "category": "Booster Box",
+        "set": "151",
+        "priority": "high"
+    },
+    {
+        "sku": "6621081",
+        "zip_code": "90503",
+        "name": "PE SPC",
+        "category": "Special Collection",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6624828",
+        "zip_code": "90503",
+        "name": "DR BB",
+        "category": "Booster Box",
+        "set": "Destined Rivals",
+        "priority": "high"
+    },
+    {
+        "sku": "6632391",
+        "zip_code": "90503",
+        "name": "Victini Box",
+        "category": "Special Collection",
+        "set": "BBWF",
+        "priority": "high"
+    },
+    {
+        "sku": "6607716",
+        "zip_code": "90503",
+        "name": "PE 2PK",
+        "category": "2-Pack Blister",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6606079",
+        "zip_code": "90503",
+        "name": "PE Binder",
+        "category": "Binder Collection",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6366743",
+        "zip_code": "90503",
+        "name": "Kanto Power Tins",
+        "category": "Tin Collection",
+        "set": "Kanto Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6607719",
+        "zip_code": "90503",
+        "name": "PE Tins",
+        "category": "Tin Collection",
+        "set": "Prismatic Evolutions",
+        "priority": "high"
+    },
+    {
+        "sku": "6624826",
+        "zip_code": "90503",
+        "name": "DR BBox",
+        "category": "Battle Box",
+        "set": "Destined Rivals",
+        "priority": "high"
+    },
+    {
+        "sku": "6527309",
+        "zip_code": "90503",
+        "name": "Crown Zenith ETB",
+        "category": "Elite Trainer Box",
+        "set": "Crown Zenith",
+        "priority": "top"
+    },
+    {
+        "sku": "6632392",
+        "zip_code": "90503",
+        "name": "Unova Tin",
+        "category": "Tin Collection",
+        "set": "BBWF",
+        "priority": "high"
+    },
+    {
+        "sku": "6598558",
+        "zip_code": "90503",
+        "name": "Surging Sparks BBox",
+        "category": "Battle Box",
+        "set": "Surging Sparks",
+        "priority": "medium"
+    },
+    {
+        "sku": "6579413",
+        "zip_code": "90503",
+        "name": "Paldea Tin",
+        "category": "Tin Collection",
+        "set": "Paldea Evolved",
+        "priority": "medium"
+    },
+    {
+        "sku": "6325549",
+        "zip_code": "90503",
+        "name": "Kanto Friends Tins",
+        "category": "Tin Collection",
+        "set": "Kanto Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6599406",
+        "zip_code": "90503",
+        "name": "Pikachu Lunchbox",
+        "category": "Lunchbox Collection",
+        "set": "Special Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6624830",
+        "zip_code": "90503",
+        "name": "DR 3PK",
+        "category": "3-Pack Blister",
+        "set": "Destined Rivals",
+        "priority": "high"
+    },
+    {
+        "sku": "6568005",
+        "zip_code": "90503",
+        "name": "Paldean Fates 3PK",
+        "category": "3-Pack Blister",
+        "set": "Paldean Fates",
+        "priority": "top"
+    },
+    {
+        "sku": "6618423",
+        "zip_code": "90503",
+        "name": "Lillie Collection",
+        "category": "Special Collection",
+        "set": "Special Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6578901",
+        "zip_code": "90503",
+        "name": "Twilight BBox",
+        "category": "Booster Box",
+        "set": "Twilight Masquerade",
+        "priority": "high"
+    },
+    {
+        "sku": "6573892",
+        "zip_code": "90503",
+        "name": "Iono Collection",
+        "category": "Special Collection",
+        "set": "Special Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6560115",
+        "zip_code": "90503",
+        "name": "Charizard Lunchbox",
+        "category": "Lunchbox Collection",
+        "set": "Special Collection",
+        "priority": "top"
+    },
+    {
+        "sku": "6578904",
+        "zip_code": "90503",
+        "name": "Twilight ETB",
+        "category": "Elite Trainer Box",
+        "set": "Twilight Masquerade",
+        "priority": "high"
+    },
+    {
+        "sku": "6595705",
+        "zip_code": "90503",
+        "name": "Crown Zenith BB",
+        "category": "Booster Box",
+        "set": "Crown Zenith",
+        "priority": "top"
+    },
+    {
+        "sku": "6527307",
+        "zip_code": "90503",
+        "name": "Crown Zenith V Collection",
+        "category": "V Collection",
+        "set": "Crown Zenith",
+        "priority": "top"
+    }
+]
