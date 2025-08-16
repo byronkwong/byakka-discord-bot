@@ -538,14 +538,8 @@ async def check_product(ctx, sku: str, zip_code: str):
         if not product_name:
             product_name = sku
         
-        # Send a "checking..." message first
-        checking_msg = await ctx.send(f"🔍 Checking availability for {product_name} (SKU: {sku}) at {zip_code}...")
-        
         # Check current stock status
         current_status = await bot.check_product_availability(sku, zip_code)
-        
-        # Delete the checking message
-        await checking_msg.delete()
         
         if current_status is None:
             embed = discord.Embed(
