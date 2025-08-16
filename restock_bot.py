@@ -424,7 +424,8 @@ async def check_status(ctx, priority_filter: str = None):
             'name': name,
             'sku': sku,
             'priority': priority,
-            'status': status
+            'status': status,
+            'zip_code': product.get('zip_code', '90503')
         }
         
         if status and status.get('available'):
@@ -446,41 +447,73 @@ async def check_status(ctx, priority_filter: str = None):
             timestamp=datetime.now()
         )
         
-        # Add products (max 25 per embed)
-        for i, product in enumerate(products[:25]):
+        # Add products (max 10 per embed to avoid Discord limits with detailed store info)
+        for i, product in enumerate(products[:10]):
             status = product['status']
+            snormax_link = f"[snormax](https://www.snormax.com/lookup/bestbuy/{product['sku']}?title=&image=&zipcode={product['zip_code']})"
             
-            # Get product details for Snormax link
-            product_obj = next((p for p in PRODUCTS_TO_MONITOR if p['sku'] == product['sku']), {})
-            zip_code = product_obj.get('zip_code', '90503')  # fallback zip
-            snormax_link = f"[snormax](https://www.snormax.com/lookup/bestbuy/{product['sku']}?title=&image=&zipcode={zip_code})"
-            
-            if status:
+            if status and status.get('available'):
+                # Format store information like in restock alerts
                 store_count = len(status.get('stores', []))
-                store_info = f"{store_count} stores" if store_count > 0 else "No stores"
                 
-                status_text = f"Priority: {product['priority'].upper()}\nStores: {store_info}\nSKU: {product['sku']}\nLink: {snormax_link}"
+                # Create the field value with store details
+                field_value = f"**Priority:** {product['priority'].upper()}\n"
+                field_value += f"**SKU:** {product['sku']}\n"
+                field_value += f"**Stores with Stock:** {store_count} stores\n"
                 
-                # Add first few store names if available
-                if status.get('stores') and len(status['stores']) > 0:
-                    store_names = [store.get('name', 'Unknown') for store in status['stores'][:2]]
-                    if len(status['stores']) > 2:
-                        store_names.append(f"... +{len(status['stores']) - 2} more")
-                    status_text += f"\nLocations: {', '.join(store_names)}"
+                # Add detailed store information
+                if status.get('stores'):
+                    store_list = []
+                    for j, store in enumerate(status['stores'][:8]):  # Limit to 8 stores to avoid field length issues
+                        store_name = store.get('name', f"Location {store.get('locationId', 'Unknown')}")
+                        pickup_qty = store.get('pickupQuantity', '')
+                        in_store_qty = store.get('inStoreQuantity', '')
+                        
+                        # Format quantity display (same logic as restock alerts)
+                        qty_info = []
+                        if pickup_qty:
+                            if pickup_qty == 9999:
+                                qty_info.append("3+")
+                            else:
+                                qty_info.append(str(pickup_qty))
+                        if in_store_qty and in_store_qty != pickup_qty:
+                            if in_store_qty == 9999:
+                                qty_info.append("3+ in-store")
+                            else:
+                                qty_info.append(f"{in_store_qty} in-store")
+                        
+                        qty_display = f" ({', '.join(qty_info)})" if qty_info else ""
+                        store_list.append(f"• {store_name}{qty_display}")
+                    
+                    # Add remaining store count if there are more than 8
+                    if store_count > 8:
+                        store_list.append(f"• ... and {store_count - 8} more stores")
+                    
+                    field_value += f"**Available Locations:**\n" + "\n".join(store_list) + f"\n"
+                
+                field_value += f"**Link:** {snormax_link}"
+                
             else:
-                status_text = f"Priority: {product['priority'].upper()}\nStatus: Not yet checked\nSKU: {product['sku']}\nLink: {snormax_link}"
+                # For out of stock items
+                total_stores = status.get('total_stores', 'Unknown') if status else 'Unknown'
+                field_value = f"**Priority:** {product['priority'].upper()}\n"
+                field_value += f"**SKU:** {product['sku']}\n"
+                field_value += f"**Status:** Out of Stock\n"
+                if status:
+                    field_value += f"**Total Stores Checked:** {total_stores}\n"
+                field_value += f"**Link:** {snormax_link}"
             
             embed.add_field(
                 name=product['name'],
-                value=status_text,
-                inline=True
+                value=field_value,
+                inline=False  # Changed to False for better readability with store lists
             )
         
-        # Add overflow notice if there are more than 25
-        if len(products) > 25:
+        # Add overflow notice if there are more than 10
+        if len(products) > 10:
             embed.add_field(
                 name="⚠️ More Products",
-                value=f"... and {len(products) - 25} more products. Use priority filters to see specific items.",
+                value=f"... and {len(products) - 10} more products. Use priority filters to see specific items.",
                 inline=False
             )
         
