@@ -450,11 +450,16 @@ async def check_status(ctx, priority_filter: str = None):
         for i, product in enumerate(products[:25]):
             status = product['status']
             
+            # Get product details for Snormax link
+            product_obj = next((p for p in PRODUCTS_TO_MONITOR if p['sku'] == product['sku']), {})
+            zip_code = product_obj.get('zip_code', '90503')  # fallback zip
+            snormax_link = f"[snormax](https://www.snormax.com/lookup/bestbuy/{product['sku']}?title=&image=&zipcode={zip_code})"
+            
             if status:
                 store_count = len(status.get('stores', []))
                 store_info = f"{store_count} stores" if store_count > 0 else "No stores"
                 
-                status_text = f"Priority: {product['priority'].upper()}\nStores: {store_info}\nSKU: {product['sku']}"
+                status_text = f"Priority: {product['priority'].upper()}\nStores: {store_info}\nSKU: {product['sku']}\nLink: {snormax_link}"
                 
                 # Add first few store names if available
                 if status.get('stores') and len(status['stores']) > 0:
@@ -463,7 +468,7 @@ async def check_status(ctx, priority_filter: str = None):
                         store_names.append(f"... +{len(status['stores']) - 2} more")
                     status_text += f"\nLocations: {', '.join(store_names)}"
             else:
-                status_text = f"Priority: {product['priority'].upper()}\nStatus: Not yet checked\nSKU: {product['sku']}"
+                status_text = f"Priority: {product['priority'].upper()}\nStatus: Not yet checked\nSKU: {product['sku']}\nLink: {snormax_link}"
             
             embed.add_field(
                 name=product['name'],
