@@ -520,6 +520,117 @@ async def check_status(ctx, priority_filter: str = None):
         else:
             await ctx.send("No products are currently available.")
 
+@bot.command(name='check')
+async def check_product(ctx, sku: str, zip_code: str):
+    """Check availability for a specific SKU at a specific zip code
+    Usage: !check [sku] [zipcode]
+    Example: !check 1234567 96250
+    """
+    try:
+        # Check if this is a monitored product to get the name
+        product_name = None
+        for product in PRODUCTS_TO_MONITOR:
+            if product['sku'] == sku:
+                product_name = product.get('name', sku)
+                break
+        
+        # If not found in monitored products, use SKU as name
+        if not product_name:
+            product_name = sku
+        
+        # Send a "checking..." message first
+        checking_msg = await ctx.send(f"🔍 Checking availability for {product_name} (SKU: {sku}) at {zip_code}...")
+        
+        # Check current stock status
+        current_status = await bot.check_product_availability(sku, zip_code)
+        
+        # Delete the checking message
+        await checking_msg.delete()
+        
+        if current_status is None:
+            embed = discord.Embed(
+                title="❌ Check Failed",
+                description=f"Could not retrieve data for SKU {sku} at {zip_code}. The product may not exist or there may be an API issue.",
+                color=0xff0000,
+                timestamp=datetime.now()
+            )
+            embed.add_field(name="SKU", value=sku, inline=True)
+            embed.add_field(name="Zip Code", value=zip_code, inline=True)
+            await ctx.send(embed=embed)
+            return
+        
+        # Create embed based on availability
+        if current_status.get('available'):
+            # Product is available
+            store_count = len(current_status.get('stores', []))
+            
+            embed = discord.Embed(
+                title="✅ Product Available",
+                description=f"**{product_name}** is in stock!",
+                color=0x00ff00,
+                timestamp=datetime.now()
+            )
+            
+            embed.add_field(name="SKU", value=sku, inline=True)
+            embed.add_field(name="Zip Code", value=zip_code, inline=True)
+            embed.add_field(name="Stores with Stock", value=f"{store_count} stores", inline=True)
+            
+            # Add detailed store information
+            if current_status.get('stores'):
+                store_list = []
+                for i, store in enumerate(current_status['stores'][:5]):  # Limit to 5 stores like !status
+                    store_name = store.get('name', f"Location {store.get('locationId', 'Unknown')}")
+                    pickup_qty = store.get('pickupQuantity', '')
+                    in_store_qty = store.get('inStoreQuantity', '')
+                    
+                    # Format quantity display (same logic as restock alerts and !status)
+                    qty_info = []
+                    if pickup_qty:
+                        if pickup_qty == 9999:
+                            qty_info.append("3+")
+                        else:
+                            qty_info.append(str(pickup_qty))
+                    if in_store_qty and in_store_qty != pickup_qty:
+                        if in_store_qty == 9999:
+                            qty_info.append("3+ in-store")
+                        else:
+                            qty_info.append(f"{in_store_qty} in-store")
+                    
+                    qty_display = f" ({', '.join(qty_info)})" if qty_info else ""
+                    store_list.append(f"• {store_name}{qty_display}")
+                
+                # Add remaining store count if there are more than 5
+                if store_count > 5:
+                    store_list.append(f"• ... and {store_count - 5} more stores")
+                
+                store_text = "\n".join(store_list)
+                embed.add_field(name="Available Locations", value=store_text, inline=False)
+        
+        else:
+            # Product is out of stock
+            total_stores = current_status.get('total_stores', 'Unknown')
+            
+            embed = discord.Embed(
+                title="❌ Product Out of Stock",
+                description=f"**{product_name}** is currently out of stock.",
+                color=0xff0000,
+                timestamp=datetime.now()
+            )
+            
+            embed.add_field(name="SKU", value=sku, inline=True)
+            embed.add_field(name="Zip Code", value=zip_code, inline=True)
+            embed.add_field(name="Total Stores Checked", value=f"{total_stores} stores", inline=True)
+        
+        # Add Snormax link
+        snormax_link = f"[Snormax](https://www.snormax.com/lookup/bestbuy/{sku}?title=&image=&zipcode={zip_code})"
+        embed.add_field(name="Link", value=snormax_link, inline=False)
+        
+        await ctx.send(embed=embed)
+        
+    except Exception as e:
+        await ctx.send(f"Error checking availability for {sku}: {str(e)}")
+        logger.error(f"Check command error: {e}")
+
 @bot.command(name='add')
 async def add_product(ctx, sku: str, zip_code: str, *, name: str = None):
     """Add a new product to monitor"""
@@ -594,6 +705,7 @@ async def commands_list(ctx):
         color=0x0099ff
     )
     embed.add_field(name="!status [priority]", value="Check stock status (optional: top, high, medium, low)", inline=False)
+    embed.add_field(name="!check [sku] [zipcode]", value="Check availability for a specific SKU at a zip code", inline=False)
     embed.add_field(name="!add [sku] [zipcode] [name]", value="Add a product to monitor", inline=False)
     embed.add_field(name="!remove [sku] [zipcode]", value="Remove a product from monitoring", inline=False)
     embed.add_field(name="!list [priority]", value="Simple list: Product Name - SKU format", inline=False)
