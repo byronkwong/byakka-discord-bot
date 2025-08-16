@@ -460,7 +460,7 @@ async def check_status(ctx, priority_filter: str = None):
             # Add detailed store information
             if status.get('stores'):
                 store_list = []
-                for j, store in enumerate(status['stores'][:8]):  # Limit to 8 stores to avoid field length issues
+                for j, store in enumerate(status['stores'][:5]):  # Limit to 5 stores
                     store_name = store.get('name', f"Location {store.get('locationId', 'Unknown')}")
                     pickup_qty = store.get('pickupQuantity', '')
                     in_store_qty = store.get('inStoreQuantity', '')
@@ -481,9 +481,9 @@ async def check_status(ctx, priority_filter: str = None):
                     qty_display = f" ({', '.join(qty_info)})" if qty_info else ""
                     store_list.append(f"• {store_name}{qty_display}")
                 
-                # Add remaining store count if there are more than 8
-                if store_count > 8:
-                    store_list.append(f"• ... and {store_count - 8} more stores")
+                # Add remaining store count if there are more than 5
+                if store_count > 5:
+                    store_list.append(f"• ... and {store_count - 5} more stores")
                 
                 field_value += f"**Available Locations:**\n" + "\n".join(store_list) + f"\n"
             
