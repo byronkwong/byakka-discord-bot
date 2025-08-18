@@ -392,19 +392,28 @@ async def on_ready():
     logger.info(f'Monitoring {len(PRODUCTS_TO_MONITOR)} products')
 
 @bot.command(name='status')
-async def check_status(ctx, priority_filter: str = None):
-    """Check current status of monitored products with optional priority filter
-    Usage: !status [top|high|medium|low]
+async def check_status(ctx, filter_param: str = None):
+    """Check current status of monitored products with optional priority or zipcode filter
+    Usage: !status [top|high|medium|low|zipcode]
+    Examples: !status high, !status 90210
     """
     if not bot.last_stock_status:
         await ctx.send("No products have been checked yet. Please wait for the first check cycle.")
         return
     
-    # Validate priority filter
+    # Determine if filter is a priority or zipcode
     valid_priorities = ['top', 'high', 'medium', 'low']
-    if priority_filter and priority_filter.lower() not in valid_priorities:
-        await ctx.send(f"Invalid priority filter. Use one of: {', '.join(valid_priorities)}")
-        return
+    priority_filter = None
+    zipcode_filter = None
+    
+    if filter_param:
+        if filter_param.lower() in valid_priorities:
+            priority_filter = filter_param.lower()
+        elif filter_param.isdigit() and len(filter_param) == 5:
+            zipcode_filter = filter_param
+        else:
+            await ctx.send(f"Invalid filter. Use priority (top, high, medium, low) or a 5-digit zipcode.")
+            return
     
     # Group products by priority and filter by availability (only available products)
     available_products = []
@@ -413,10 +422,15 @@ async def check_status(ctx, priority_filter: str = None):
         sku = product['sku']
         name = product.get('name', sku)
         priority = product.get('priority', 'medium')
+        zip_code = product.get('zip_code', '90503')
         status = bot.last_stock_status.get(sku, {})
         
         # Apply priority filter if specified
-        if priority_filter and priority.lower() != priority_filter.lower():
+        if priority_filter and priority.lower() != priority_filter:
+            continue
+            
+        # Apply zipcode filter if specified
+        if zipcode_filter and zip_code != zipcode_filter:
             continue
         
         # Only include products that are available
@@ -426,7 +440,7 @@ async def check_status(ctx, priority_filter: str = None):
                 'sku': sku,
                 'priority': priority,
                 'status': status,
-                'zip_code': product.get('zip_code', '90503')
+                'zip_code': zip_code
             }
             available_products.append(product_info)
     
@@ -455,6 +469,7 @@ async def check_status(ctx, priority_filter: str = None):
             # Create the field value with store details
             field_value = f"**Priority:** {product['priority'].upper()}\n"
             field_value += f"**SKU:** {product['sku']}\n"
+            field_value += f"**Zip Code:** {product['zip_code']}\n"
             field_value += f"**Stores with Stock:** {store_count} stores\n"
             
             # Add detailed store information
@@ -507,9 +522,17 @@ async def check_status(ctx, priority_filter: str = None):
     
     # Create embed for available products only
     if available_products:
+        # Determine title based on filter type
+        if priority_filter:
+            title = f"✅ Available {priority_filter.upper()} Priority Products ({len(available_products)})"
+        elif zipcode_filter:
+            title = f"✅ Available Products in {zipcode_filter} ({len(available_products)})"
+        else:
+            title = f"✅ Available Products ({len(available_products)})"
+            
         available_embed = create_status_embed(
             available_products, 
-            f"✅ Available Products ({len(available_products)})",
+            title,
             0x00ff00
         )
         if available_embed:
@@ -517,6 +540,8 @@ async def check_status(ctx, priority_filter: str = None):
     else:
         if priority_filter:
             await ctx.send(f"No {priority_filter} priority products are currently available.")
+        elif zipcode_filter:
+            await ctx.send(f"No products are currently available in zipcode {zipcode_filter}.")
         else:
             await ctx.send("No products are currently available.")
 
