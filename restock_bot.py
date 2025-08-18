@@ -629,7 +629,7 @@ async def commands_list(ctx):
         title="Bot Commands",
         color=0x0099ff
     )
-    embed.add_field(name="!status [priority]", value="Check stock status (optional: top, high, medium, low)", inline=False)
+    embed.add_field(name="!status [zipcode / priority]", value="Check stock status (optional: ZIPCODE, top, high, medium, low)", inline=False)
     embed.add_field(name="!check [sku] [zipcode]", value="Check availability for a specific SKU at a zip code", inline=False)
     embed.add_field(name="!add [sku] [zipcode] [name]", value="Add a product to monitor", inline=False)
     embed.add_field(name="!remove [sku] [zipcode]", value="Remove a product from monitoring", inline=False)
